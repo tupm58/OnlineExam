@@ -25,11 +25,11 @@ module.exports = function () {
     }));
     app.use(bodyParser.json());
 
-    require('../route/auth.route.js')(app); // load our routes and pass in our app and fully configured passport
-    // console.log("oke");
-    
     var pattern = path.join(__dirname,'../route/*.route.js');
     glob(pattern, function (er, files) {
+        files.forEach(function(file){
+            require(file)(app);
+        });
     });
     console.log("route ok");
     return app;

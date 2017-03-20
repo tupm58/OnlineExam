@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
     path = require('path'),
     User = mongoose.model('User');
 
-module.exports.oauthCall = function (strategy, scope) {
+exports.oauthCall = function (strategy, scope) {
     return function (req, res, next) {
         // Set redirection path on session.
         // Do not redirect to a signin or signup page
@@ -17,7 +17,7 @@ module.exports.oauthCall = function (strategy, scope) {
         passport.authenticate(strategy, scope)(req, res, next);
     };
 };
-module.exports.oauthCallback = function (strategy) {
+exports.oauthCallback = function (strategy) {
     return function (req, res, next) {
         passport.authenticate(strategy,function(err, user, info){
             // var sessionRedirectURL = req.session.redirect_to;
