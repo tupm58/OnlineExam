@@ -4,7 +4,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 var answerSchema = new Schema({
-    answer: String,
+    content: String,
     correct: Boolean
 });
 var question = new Schema({
@@ -12,13 +12,17 @@ var question = new Schema({
         type: String,
         required: 'Please fill Exam name'
     },
+    img : {
+        type: String,
+        default: ''
+    },
+    audio: {
+        type: String,
+        default: ''
+    },
     mark : {
         type: Number
     },
-    // created_by :{
-    //     type: Schema.ObjectId,
-    //     ref : 'User'
-    // },
     category: {
         type: String
     },
