@@ -6,7 +6,6 @@ var mongoose = require('mongoose'),
     path = require('path'),
     User = mongoose.model('User'),
     Question = mongoose.model('Question');
-    Answer = mongoose.model('Answer');
 exports.create = function(req,res){
     var question = new Question(req.body);
     question.created_by = req.user;

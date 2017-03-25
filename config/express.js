@@ -5,13 +5,15 @@ var config = require('./config'),
     express = require('express'),
     bodyParser = require('body-parser'),
     passport = require('passport'),
-
+    cors = require('cors'),
+    
     glob = require("glob"),
     path = require("path"),
     session = require('express-session');
 
 module.exports = function () {
     var app = express();
+    app.use(cors());
     app.use(session({
         saveUninitialized: true,
         resave: true,

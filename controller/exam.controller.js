@@ -48,7 +48,15 @@ exports.detailExam = function (req,res) {
                     message: "exam list error"
                 });
             } else {
-                res.jsonp(exam);
+                var timeTotal = 0 ;
+                var listSection = exam.sections;
+                listSection.forEach(function(section){
+                   timeTotal = section.timeInMinute + timeTotal
+                });
+                res.jsonp({
+                    exam,
+                    timeTotal: timeTotal
+                });
             }
         })
 };
