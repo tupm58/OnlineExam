@@ -9,4 +9,6 @@ module.exports = function(app){
     app.route('/api/exam').get(exams.listExam);
 
     app.route('/api/exam/:id').get(exams.detailExam);
+    
+    
 };
