@@ -12,20 +12,41 @@ exports.create = function (req, res) {
     AnswerSheet.create(answerSheet)
         .then(function(result){
             console.log(1);
+            res.jsonp(result._id);
         }).catch(function(err){
             console.log(err);
     });
-    Exam.findOne({_id: answerSheet.exam },'name sections.questions')
-        .populate('sections.questions','_id name mark category answers.content answers._id')
-        .exec(function(err,exam){
-            if (err){
-                console.log(err);
-            }else {
-                res.jsonp({
-                    exam
-                });
-            }
-        })
-    
-
+};
+exports.getDetail = function(req,res){
+    var id = req.params.id;
+    try {
+        id = mongoose.Types.ObjectId(id);
+    } catch (err) {
+        return res.status(400).send({
+            message: 'Exam is invalid'
+        });
+    }   
+    AnswerSheet.findOne(id)
+        .populate('sheet.question','_id mark answers.content answers.correct')
+        .populate('exam','_id name')
+        .then(function(result){
+            var mark = 0;
+            var trueAnswer = 0;
+            result.sheet.forEach(function(sheet){
+                sheet.question.answers.forEach(function(answer){
+                    if (answer.correct == true && answer.content == sheet.answer) {
+                        mark = mark + sheet.question.mark;
+                        trueAnswer++;
+                    }
+                })
+            });
+            res.jsonp({
+                id: result._id,
+                exam: result.exam.name,
+                mark,
+                trueAnswer
+            });
+        }).catch(function(err){
+        
+    })
 };

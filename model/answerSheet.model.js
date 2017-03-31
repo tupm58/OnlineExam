@@ -22,6 +22,7 @@ var answerSheet = new Schema({
         answer: {
             type: String
         }
-    }]
+    }],
+    mark: Number
 });
 mongoose.model('AnswerSheet',answerSheet);
