@@ -9,10 +9,13 @@ var mongoose = require('mongoose'),
 exports.create = function (req, res) {
     var answerSheet = new AnswerSheet(req.body);
     answerSheet.user = req.user;
+    console.log(answerSheet);
     AnswerSheet.create(answerSheet)
         .then(function(result){
             console.log(1);
-            res.jsonp(result._id);
+            res.jsonp({
+                id: result._id
+            });
         }).catch(function(err){
             console.log(err);
     });
@@ -40,6 +43,17 @@ exports.getDetail = function(req,res){
                     }
                 })
             });
+            if (result.mark == undefined){
+                AnswerSheet.update({ _id : id},{
+                    $set: {
+                        mark : mark
+                    }
+                }).then(function(res){
+                    console.log("ok");
+                }).catch(function(err){
+                    console.log(er);
+                })
+            }
             res.jsonp({
                 id: result._id,
                 exam: result.exam.name,
@@ -47,6 +61,6 @@ exports.getDetail = function(req,res){
                 trueAnswer
             });
         }).catch(function(err){
-        
+        console.log(err);
     })
 };
