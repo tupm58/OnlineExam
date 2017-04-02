@@ -21,7 +21,6 @@ exports.oauthCallback = function (strategy) {
     return function (req, res, next) {
         passport.authenticate(strategy,function(err, user, info){
             // var sessionRedirectURL = req.session.redirect_to;
-
             if (err) {
                 // return res.redirect('/authentication/signin?err=' + encodeURIComponent(errorHandler.getErrorMessage(err)));
                 console.log(err);
@@ -34,8 +33,8 @@ exports.oauthCallback = function (strategy) {
                     // return res.redirect('/authentication/signin');
                     console.log(err);
                 }
-
-                return res.redirect('/test');
+                //res.jsonp(user);
+                return res.redirect('http://localhost:3000/#!/dashboard');
             });
         })(req, res, next);
     }

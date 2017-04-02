@@ -23,6 +23,7 @@ var answerSheet = new Schema({
             type: String
         }
     }],
-    mark: Number
+    mark: Number,
+    markByPercent : Number
 });
 mongoose.model('AnswerSheet',answerSheet);

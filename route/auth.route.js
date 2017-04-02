@@ -10,7 +10,6 @@ module.exports = function(app){
         scope: ['email']
     }));
     app.route('/api/auth/facebook/callback').get(users.oauthCallback('facebook',{
-
     }));
 
     app.get('/',function(req,res){
