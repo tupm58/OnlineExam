@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 
 exports.create = function(req,res){
     var exam = new Exam(req.body);
+    console.log(req.user);
     exam.created_by = req.user;
     Exam.create(exam)
         .then(function(result){
@@ -17,6 +18,7 @@ exports.create = function(req,res){
 };
 
 exports.listExam = function(req,res){
+    
     Exam.find()
         .sort('-created_at')
         .select('_id name description created_at created_by')
@@ -41,7 +43,7 @@ exports.detailExam = function (req,res) {
         });
     }
     Exam.findOne(id)
-        .populate('sections.questions','_id name mark category answers.content answers._id')
+        .populate('sections.questions','_id name mark category answers.content answers._id img audio')
         .exec(function(err,exam){
             if(err){
                 return res.status(400).send({

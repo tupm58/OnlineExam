@@ -5,19 +5,33 @@ var mongoose = require('mongoose'),
 var user = new Schema({
     local: {
         email: String,
-        password: String
+        username:String,
+        password: String,
+        token:String
     },
     facebook: {
         id: String,
         token: String,
         email: String,
         name: String,
-        username: String,
+        username: String
     }
+},{
+    toObject: {
+        transform: function (doc, user) {
+            delete user.local.password;
+        }
+    },
+    toJSON: {
+        transform: function (doc, user) {
+            delete user.local.password;
+        }
+    }
+
 });
 
-user.methods.generateHash = function(password){
-
-};
+// user.methods.generateHash = function(password){
+//
+// };
 // module.exports = mongoose.model('User',user);
 mongoose.model('User',user);

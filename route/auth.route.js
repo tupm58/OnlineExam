@@ -12,10 +12,13 @@ module.exports = function(app){
     app.route('/api/auth/facebook/callback').get(users.oauthCallback('facebook',{
     }));
 
-    app.get('/',function(req,res){
-        res.jsonp("a");
+    app.get('/secret',passport.authenticate('jwt', { session: true }),function(req,res){
+        res.jsonp(req.user);
     });
     app.get('/test',authenticationMiddleware.authenticationMiddleware() ,function(req,res){
-        res.jsonp("test");
+        res.jsonp(req.user);
     });
+
+    app.route('/login').post(users.login);
+
 };

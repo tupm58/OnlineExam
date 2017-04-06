@@ -3,8 +3,16 @@
  */
 var  mongoose = require('mongoose'),
     passport = require('passport'),
+    jwt = require('jsonwebtoken'),
+
     FacebookStrategy = require('passport-facebook').Strategy,
-    configAuth = require('./auth');
+    passportJWT = require('passport-jwt'),
+    ExtractJwt = passportJWT.ExtractJwt,
+    JWTStrategy = passportJWT.Strategy,
+
+    configAuth = require('./auth'),
+    setting = require('./setting');
+
 var authenticationMiddleware   = require('./middleware.js');
 module.exports = function () {
     var User = mongoose.model('User');
@@ -50,5 +58,20 @@ module.exports = function () {
         })
     }));
     // passport.authenticationMiddleware =authenticationMiddleware.authenticationMiddleware ;
+
+    var jwtOptions = {};
+    jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeader();
+    jwtOptions.secretOrKey = setting.secretKey;
+
+    passport.use(new JWTStrategy(jwtOptions,function(jwt_payload,next){
+        console.log('payload received',jwt_payload);
+        User.findOne({_id: jwt_payload.id}, function (err, user) {
+           if (user){
+               next(null,user);
+           }else{
+               next(null,false);
+           }
+        });
+    }));
 };
 

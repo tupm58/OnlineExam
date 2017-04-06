@@ -13,6 +13,11 @@ var config = require('./config'),
 
 module.exports = function () {
     var app = express();
+
+    app.use(bodyParser.urlencoded({
+        extended: true
+    }));
+    app.use(bodyParser.json());
     app.use(cors());
     app.use(session({
         saveUninitialized: true,
@@ -22,11 +27,7 @@ module.exports = function () {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    app.use(bodyParser.urlencoded({
-        extended: true
-    }));
-    app.use(bodyParser.json());
-
+    app.use('/upload',express.static(path.join('./upload')));
     var pattern = path.join(__dirname,'../route/*.route.js');
     glob(pattern, function (er, files) {
         files.forEach(function(file){
