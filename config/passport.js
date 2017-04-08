@@ -64,7 +64,6 @@ module.exports = function () {
     jwtOptions.secretOrKey = setting.secretKey;
 
     passport.use(new JWTStrategy(jwtOptions,function(jwt_payload,next){
-        console.log('payload received',jwt_payload);
         User.findOne({_id: jwt_payload.id}, function (err, user) {
            if (user){
                next(null,user);

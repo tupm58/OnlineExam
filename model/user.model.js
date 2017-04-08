@@ -7,14 +7,16 @@ var user = new Schema({
         email: String,
         username:String,
         password: String,
-        token:String
+        token:String,
+        img: String
     },
     facebook: {
         id: String,
         token: String,
         email: String,
         name: String,
-        username: String
+        username: String,
+        img: String
     }
 },{
     toObject: {

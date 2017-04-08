@@ -19,6 +19,6 @@ module.exports = function(app){
         res.jsonp(req.user);
     });
 
-    app.route('/login').post(users.login);
+    app.route('/api/auth/login').post(users.login);
 
 };

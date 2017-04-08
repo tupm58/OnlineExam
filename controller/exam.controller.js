@@ -22,14 +22,14 @@ exports.listExam = function(req,res){
     Exam.find()
         .sort('-created_at')
         .select('_id name description created_at created_by')
-        .exec(function(err,exams){
-            if(err){
-                return res.status(400).send({
-                    message: "exam list error"
-                });   
-            } else {
-                res.jsonp(exams);
-            }
+        .exec()
+        .then(function(exams){
+            res.jsonp(exams);
+        }).catch(function(err){
+            return res.status(400).send({
+                message: "exam list error"
+            });
+            
         })
 };
 

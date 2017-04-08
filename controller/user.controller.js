@@ -47,21 +47,24 @@ exports.login = function(req,res){
         var password = req.body.password;
     }
     User.findOne({'local.username': username})
-        .exec(function (err,user){
-            if (err){
-                return res.status(400).send({
-                    message: "no user"
+        .exec()
+        .then(function(user){
+            if(user.local.password === password){
+                var payload = {id: user.id};
+                var token = jwt.sign(payload, setting.secretKey);
+                res.json({
+                    message: "ok",
+                    token: token,
+                    profile: user
                 });
-            }else {
-                if(user.local.password === password){
-                    var payload = {id: user.id};
-                    var token = jwt.sign(payload, setting.secretKey);
-                    res.json({message: "ok", token: token});
-                }else{
-                    return res.status(400).send({
-                        message: "no pass"
-                    });
-                }
+            }else{
+                return res.status(400).send({
+                    message: "no pass"
+                });
             }
-        })
+        }).catch(function(err){
+            return res.status(400).send({
+               message: "no user"
+            });
+    });
 };
