@@ -3,7 +3,8 @@
  */
 var mongoose = require('mongoose'),
     path = require('path'),
-    Game = mongoose.model('Game');
+    Game = mongoose.model('Game'),
+    User = mongoose.model('User');
 
 exports.findGameById = function(req,res){
     let pin = req.params.id;
@@ -30,22 +31,26 @@ exports.findGameById = function(req,res){
 
 exports.showLeaderBoard = function(req,res){
     let pin = req.params.id;
-    Game.findOne({ pin: pin})
-        .populate('results')
-        .exec()
-        .then(function(result){
-            if (result){
-                res.jsonp(result);
-            }else {
-                return res.status(400).send({
-                    message: 'Pin is invalid'
-                });
+    Game.aggregate([
+        { "$match": { "pin": pin }},
+        { "$unwind" : "$results" },
+        {
+            "$group" : {
+                "_id": "$results.user",
+                "totalScore": {
+                    "$sum" : "$results.score"
+                }
             }
-
+        }
+    ]).exec()
+        .then(function(data){
+            User.populate(data, {path: "_id"})
+                .then(function(data){
+                    res.jsonp(data)
+                }).catch(function(err){
+                    console.log(err);
+            });
         }).catch(function(err){
             console.log(err);
-            return res.status(400).send({
-                message: 'Pin is invalid'
-            });
     })
 };

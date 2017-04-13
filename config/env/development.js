@@ -5,5 +5,5 @@ var port = 8000;
 
 module.exports = {
     port: process.env.PORT || port,
-    db:  'mongodb://liucuxiu:moclammiu1@ds145800.mlab.com:45800/oexam'
+    db: 'mongodb://localhost/examonline' || 'mongodb://liucuxiu:moclammiu@ds145800.mlab.com:45800/oexam'
 };
