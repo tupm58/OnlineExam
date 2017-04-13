@@ -39,7 +39,7 @@ exports.getQuizDetail = function(req,res){
         });
     }
     Quiz.findOne(id)
-        .populate('questions','_id name mark category answers.content answers._id img audio')
+        .populate('questions','_id name mark category answers.content answers.correct answers._id img audio')
         .exec()
         .then(function(quiz){
             res.jsonp(quiz);
