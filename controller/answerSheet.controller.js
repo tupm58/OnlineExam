@@ -9,7 +9,6 @@ var mongoose = require('mongoose'),
 exports.create = function (req, res) {
     var answerSheet = new AnswerSheet(req.body);
     answerSheet.user = req.user;
-    console.log(answerSheet);
     AnswerSheet.create(answerSheet)
         .then(function(result){
             console.log(1);
