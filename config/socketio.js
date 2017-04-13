@@ -41,7 +41,6 @@ module.exports = function(app){
                 userId: data.userId,
                 socket: socket.id
             });
-
         });
     });
     
