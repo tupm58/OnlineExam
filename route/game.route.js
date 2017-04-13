@@ -8,4 +8,6 @@ module.exports = function(app){
 
     app.route('/api/game/checkPin/:id').get(game.findGameById);
 
+    app.route('/api/game/leaderboard/:id').get(game.showLeaderBoard);
+
 };

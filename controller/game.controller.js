@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
     Game = mongoose.model('Game');
 
 exports.findGameById = function(req,res){
-    var pin = req.params.id;
+    let pin = req.params.id;
     Game.findOne({ pin: pin, active: true})
         .exec()
         .then(function(result){
@@ -26,4 +26,26 @@ exports.findGameById = function(req,res){
                 message: 'Pin is invalid'
             });
         })
+};
+
+exports.showLeaderBoard = function(req,res){
+    let pin = req.params.id;
+    Game.findOne({ pin: pin})
+        .populate('results')
+        .exec()
+        .then(function(result){
+            if (result){
+                res.jsonp(result);
+            }else {
+                return res.status(400).send({
+                    message: 'Pin is invalid'
+                });
+            }
+
+        }).catch(function(err){
+            console.log(err);
+            return res.status(400).send({
+                message: 'Pin is invalid'
+            });
+    })
 };
