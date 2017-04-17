@@ -7,7 +7,7 @@ var passport = require('passport');
 module.exports = function(app){
     app.route('/api/exam').post(exams.create);
     
-    // app.route('/api/exam').get(passport.authenticate('jwt', { session: false }),exams.listExam);
+    app.route('/api/exam/me').get(passport.authenticate('jwt', { session: false }),exams.listExamByMe);
     app.route('/api/exam').get(exams.listExam);
 
     app.route('/api/exam/:id').get(exams.detailExam);

@@ -32,6 +32,20 @@ exports.listExam = function(req,res){
             
         })
 };
+exports.listExamByMe = function(req,res){
+    Exam.find({'created_by' : req.user})
+        .sort('-created_at')
+        .select('_id name description created_at')
+        .exec()
+        .then(function(exams){
+            res.jsonp(exams);
+        }).catch(function(err){
+        return res.status(400).send({
+            message: "exam list error"
+        });
+
+    })
+};
 
 exports.detailExam = function (req,res) {
     var id = req.params.id;
