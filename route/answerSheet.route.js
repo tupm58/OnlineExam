@@ -15,4 +15,6 @@ module.exports = function(app){
     app.route('/api/answerSheet/exam/:examId').get(answerSheet.getResultByExam);
     
     app.route('/api/answerSheet/exam/:examId/export-xls').get(answerSheet.exportXls);
+    
+    app.route('/api/download/:file').get(answerSheet.downloadResult);
 };

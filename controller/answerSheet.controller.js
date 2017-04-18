@@ -127,14 +127,14 @@ exports.exportXls = function(req,res){
                     quotes: ' '
                 };
                 var result = json2csv(opts);
-                var path = './download/file.csv';
+                var path = './download/'+ examId +'.csv';
                 fs.writeFile(path, result, function(err) {
                     if (err) throw err;
-                    res.download(path);
-                    // return res.status(200).send({
-                    //     message: "results list save",
-                    //     path: path
-                    // })
+                    // res.download(path);
+                    return res.status(200).send({
+                        message: "results list save",
+                        path: path
+                    })
                 });
             } catch (err) {
                 // Errors are thrown for bad options, or if the data is empty and no fields are provided. 
@@ -146,4 +146,9 @@ exports.exportXls = function(req,res){
                 message: "results list error"
             })
     });
+};
+
+exports.downloadResult = function(req,res){
+    var filePath = req.params.file;
+    res.download('./download/'+ filePath);
 };
