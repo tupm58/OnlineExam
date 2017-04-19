@@ -16,8 +16,21 @@ module.exports = function(app){
     server = http.createServer(app);
 
     var io = socket(server);
+   
     io.on('connection',function(socket){
         console.log("new connection");
+        socket.on('connected',function(data){
+            socket.username = data.username;
+            io.emit('connected',{
+                username: data.username,
+                examId: data.examId
+            });
+        });
+        socket.on('disconnect', function (data) {
+            io.emit('user disconnected',{
+                message: socket.username + " disconnected"
+            });
+        });
         socket.on('newGameCreated',function(data){
             var pin = data.gameId;
             var game = new Game({
@@ -92,7 +105,15 @@ module.exports = function(app){
             socket.broadcast.to(pin.toString()).emit('receiveAnswer',{
                 data : data
             })
+        });
+        
+        socket.on('endGame',function(data){
+            socket.emit('endGame',{
+                message: data.message
+            })
         })
+
+        
     });
     
     return server;

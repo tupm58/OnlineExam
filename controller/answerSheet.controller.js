@@ -105,11 +105,19 @@ exports.getResultByExam = function (req, res) {
                 return (result.markByPercent < 80 && result.markByPercent >50);
             });
             var mark3 = results.filter(function(result){
-                return result.markByPercent <= 80;
+                return result.markByPercent <= 50;
             });
             res.jsonp({
                 result: results,
-                doTime : results.length
+                doTime : results.length,
+                mark: {
+                    mark1: mark1.length,
+                    mark2: mark2.length,
+                    mark3: mark3.length
+                },
+                pass: {
+                    markPass : mark2.length + mark1.length
+                }
             });
         }).catch(function (err) {
         return res.status(400).send({
