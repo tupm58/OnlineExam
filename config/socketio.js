@@ -18,19 +18,29 @@ module.exports = function(app){
     var io = socket(server);
    
     io.on('connection',function(socket){
-        console.log("new connection");
-        socket.on('connected',function(data){
-            socket.username = data.username;
-            io.emit('connected',{
-                username: data.username,
-                examId: data.examId
+        socket.on('room', function(data) {// take room variable from client side
+            var room = data.examId;
+            socket.join(room); // and join it
+
+            socket.broadcast.to(room).emit('connectToStudentRoom', {      // Emits a status message to the connect room when a socket client is connected
+                type: 'status',
+                text: 'Is now connected',
+                created: Date.now(),
+                username: data.username
             });
+
+            socket.on('disconnect', function () {// Emits a status message to the connected room when a socket client is disconnected
+                console.log(room);
+                io.sockets.in(room).emit('disconnect',{
+                    type: 'status',
+                    text: 'disconnected',
+                    created: Date.now(),
+                    username: data.username
+                });
+                console.log("disconnet.");
+            })
         });
-        socket.on('disconnect', function (data) {
-            io.emit('user disconnected',{
-                message: socket.username + " disconnected"
-            });
-        });
+
         socket.on('newGameCreated',function(data){
             var pin = data.gameId;
             var game = new Game({
