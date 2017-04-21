@@ -16,11 +16,20 @@ module.exports = function(app){
     server = http.createServer(app);
 
     var io = socket(server);
-   
+    var connectedMember = [];
+
     io.on('connection',function(socket){
         socket.on('room', function(data) {// take room variable from client side
             var room = data.examId;
             socket.join(room); // and join it
+            socket.on('joinSuccess',function(){
+                connectedMember.push({username: data.username, created: Date.now()});
+                io.sockets.in(room).emit('listOnline',{
+                    listOnline : connectedMember
+                });
+                console.log(connectedMember);
+
+            });
 
             socket.broadcast.to(room).emit('connectToStudentRoom', {      // Emits a status message to the connect room when a socket client is connected
                 type: 'status',
@@ -37,7 +46,16 @@ module.exports = function(app){
                     created: Date.now(),
                     username: data.username
                 });
-                console.log("disconnet.");
+                connectedMember = connectedMember.filter(function(value){
+                    if(value.username === data.username){
+                        return false;
+                    }
+                    return value;
+                });
+                io.sockets.in(room).emit('listOnline',{
+                    listOnline : connectedMember
+                });
+                console.log("disconnect.");
             })
         });
 
