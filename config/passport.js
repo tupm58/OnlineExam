@@ -33,7 +33,7 @@ module.exports = function () {
         clientID: configAuth.facebookAuth.clientID,
         clientSecret: configAuth.facebookAuth.clientSecret,
         callbackURL: configAuth.facebookAuth.callbackURL,
-        profileFields: ['id', 'email', 'first_name', 'last_name'],
+        profileFields: ['id', 'email', 'first_name', 'last_name','photos'],
     }, function (token, refreshToken, profile, done) {
         process.nextTick(function () {
             User.findOne({'facebook.id': profile.id}, function (err, user) {
@@ -47,6 +47,8 @@ module.exports = function () {
                     newUser.facebook.token = token;
                     newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                     newUser.facebook.email = (profile.emails[0].value || '').toLowerCase();
+                    // newUser.facebook.img = (profile.photos[0].value || '').toLowerCase();
+                    newUser.facebook.img = ('graph.facebook.com/' + profile.id + '/picture?type=large' || '').toLowerCase();
 
                     newUser.save(function (err) {
                         if (err)

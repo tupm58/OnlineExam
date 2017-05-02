@@ -18,19 +18,23 @@ var user = new Schema({
         username: String,
         img: String
     }
-},{
+}
+    ,{
     toObject: {
         transform: function (doc, user) {
+            if (user.local != null)
             delete user.local.password;
         }
     },
     toJSON: {
         transform: function (doc, user) {
+            if (user.local != null)
             delete user.local.password;
         }
     }
 
-});
+}
+);
 
 // user.methods.generateHash = function(password){
 //

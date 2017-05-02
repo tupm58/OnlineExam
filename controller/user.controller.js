@@ -35,8 +35,12 @@ exports.oauthCallback = function (strategy) {
                     // return res.redirect('/authentication/signin');
                     console.log(err);
                 }
-                res.jsonp(user);
-                // return res.redirect('http://localhost:3000/#!/dashboard');
+                var payload = {id: user.id};
+                // var token = jwt.sign(payload, setting.secretKey);
+                // res.jsonp(user);
+                return res.redirect('https://tupm58.github.io/oexam-huhu/#!/token/'+user.facebook.token);
+
+                // return res.redirect('http://localhost:3000/#!/token/'+user.facebook.token);
             });
         })(req, res, next);
     }
@@ -67,4 +71,24 @@ exports.login = function(req,res){
                message: "no user"
             });
     });
+};
+
+exports.getUser = function(req,res){
+    console.log("Aaaaaaaaa" + req.body.token);
+    User.findOne({'facebook.token': req.body.token})
+        .exec()
+        .then(function(user){
+            console.log(user);
+            var payload = {id: user.id};
+            var token = jwt.sign(payload, setting.secretKey);
+            res.jsonp({
+                message: "FB ok",
+                token: token,
+                profile: user
+            });
+        }).catch(function(err){
+            return res.status(400).send({
+                message: "no user"
+            });
+    })
 };
