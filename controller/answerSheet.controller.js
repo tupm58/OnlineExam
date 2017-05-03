@@ -129,14 +129,14 @@ exports.getResultByExam = function (req, res) {
 exports.exportXls = function (req, res) {
     var examId = req.params.examId;
     AnswerSheet.find({exam: examId})
-        .populate('user', '_id local.username')
+        .populate('user', '_id local.username facebook.name')
         .populate('exam', 'name')
         .select('_id exam user created_at mark markByPercent')
         .exec()
         .then(function (results) {
             console.log(results);
-            var fields = ['_id', 'user.local.username', 'exam.name', 'mark', 'markByPercent', 'created_at'];
-            var fieldNames = ['_id', 'Username', 'Exam', 'Mark', 'Percent', 'Date'];
+            var fields = ['_id', 'user.local.username', 'user.facebook.name', 'exam.name', 'mark', 'markByPercent', 'created_at'];
+            var fieldNames = ['_id', 'Username', 'Facebook name','Exam', 'Mark', 'Percent', 'Date'];
             try {
                 var opts = {
                     data: results,
