@@ -93,7 +93,7 @@ exports.getResultByUser = function (req, res) {
 exports.getResultByExam = function (req, res) {
     var examId = req.params.examId;
     AnswerSheet.find({exam: examId})
-        .populate('user', '_id local.username facebook.username')
+        .populate('user', '_id local.username facebook.name')
         .populate('exam', 'name')
         .select('_id exam user created_at mark markByPercent')
         .exec()

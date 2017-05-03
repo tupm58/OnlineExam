@@ -15,7 +15,7 @@ var user = new Schema({
         token: String,
         email: String,
         name: String,
-        username: String,
+        // username: String,
         img: String
     }
 }
