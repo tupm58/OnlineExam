@@ -46,7 +46,11 @@ module.exports = function () {
                     newUser.facebook.id = profile.id;
                     newUser.facebook.token = token;
                     newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-                    newUser.facebook.email = (profile.emails[0].value || '').toLowerCase();
+                    if (!profile.emails){
+                        newUser.facebook.email = "";
+                    }else {
+                        newUser.facebook.email = (profile.emails[0].value || '').toLowerCase();
+                    }
                     // newUser.facebook.img = (profile.photos[0].value || '').toLowerCase();
                     newUser.facebook.img = ('graph.facebook.com/' + profile.id + '/picture?type=large' || '').toLowerCase();
 
