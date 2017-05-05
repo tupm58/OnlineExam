@@ -45,7 +45,7 @@ module.exports = function () {
                     var newUser = new User();
                     newUser.facebook.id = profile.id;
                     newUser.facebook.token = token;
-                    newUser.facebook.name = profile.name.familyName + ' ' + profile.name.givenName;
+                    newUser.facebook.name = profile.name;
                     if (!profile.emails){
                         newUser.facebook.email = "";
                     }else {
