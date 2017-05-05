@@ -33,7 +33,7 @@ module.exports = function () {
         clientID: configAuth.facebookAuth.clientID,
         clientSecret: configAuth.facebookAuth.clientSecret,
         callbackURL: configAuth.facebookAuth.callbackURL,
-        profileFields: ['id', 'email', 'first_name', 'last_name','photos'],
+        profileFields: ['id', 'email', 'name','photos'],
     }, function (token, refreshToken, profile, done) {
         process.nextTick(function () {
             User.findOne({'facebook.id': profile.id}, function (err, user) {
