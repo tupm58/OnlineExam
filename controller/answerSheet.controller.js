@@ -146,7 +146,7 @@ exports.exportXls = function (req, res) {
                 };
                 var result = json2csv(opts);
                 var path = './download/' + examId + '.csv';
-                fs.writeFile(path, result,'utf8', function (err) {
+                fs.writeFile(path, "\uFEFF" + result, function (err) {
                     if (err) throw err;
                     // res.download(path);
                     return res.status(200).send({
