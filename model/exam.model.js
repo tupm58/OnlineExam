@@ -27,7 +27,10 @@ var exam = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Question'
         }]
-    }]
+    }],
+    start_at: {
+        type: Date
+    }
 });
 
 mongoose.model('Exam',exam);
